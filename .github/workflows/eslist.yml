@@ -14,10 +14,12 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - name: Run npm install
-        run: npm install
-      - name: Run ESLint
-        run: node_modules/.bin/eslint build docs lib script spec-main -f node_modules/@microsoft/eslint-formatter-sarif/sarif.js -o results.sarif || true
-      - uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: ../results/kube-linter.sarif
+      - name: Analyze code statically
+        on: pull_request
+        jobs:
+          eslint:
+            runs-on: ubuntu-latest
+            steps:
+              - uses: actions/checkout@v2
+              - name: Analyze code statically using ESLint
+                uses: moneyforward/eslint-action@v0
