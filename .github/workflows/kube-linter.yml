@@ -29,12 +29,6 @@ jobs:
           output-file: ../results/kube-linter.sarif
         continue-on-error: true
 
-      - name: Save kube-linter output to file
-        run: |
-          cd "../results"
-          cat kube-linter.sarif
-        shell: bash
-
       - name: Upload SARIF report files to GitHub
         uses: github/codeql-action/upload-sarif@v3
 
