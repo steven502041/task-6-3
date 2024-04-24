@@ -15,9 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-#      - name: Create results directory for SARIF report files
-#        run: mkdir -p ../results
-#        shell: bash
+      - name: Create results directory for SARIF report files
+        run: mkdir -p ../results
+        shell: bash
 
       - name: Scan YAML files with kube-linter
         id: kube-linter-action-scan
@@ -26,7 +26,7 @@ jobs:
           directory: webapp
           config: kube-linter-config/.kube-linter-config.yml
           format: sarif
-          output-file: kube-linter.sarif
+          output-file: ../results/kube-linter.sarif
         continue-on-error: true
 
       - name: Upload SARIF report files to GitHub
