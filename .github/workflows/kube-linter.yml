@@ -1,44 +1,29 @@
-name: Check Kubernetes YAMLs with kube-linter
+  - name: Create results directory for SARIF report files
+    run: mkdir -p ../results
+    shell: bash
 
-on:
-  push:
-    branches: [main, dev]
-  pull_request:
+  - name: Scan YAML files with kube-linter
+    id: kube-linter-action-scan
+    uses: stackrox/kube-linter-action@v1.0.5
+    with:
+      directory: webapp
+      config: kube-linter-config/.kube-linter-config.yml
+      format: sarif
+      output-file: ../results/kube-linter.sarif
+    continue-on-error: true
 
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      actions: read
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
+  - name: Save kube-linter output to file
+    env:
+      REPO: ${{ github.repository }}
+    run: |
+      cat ${{ env.REPO }}/results/kube-linter.sarif > kube-linter.sarif
+    shell: bash
 
-      - name: Create results directory for SARIF report files
-        run: mkdir -p ../results
-        shell: bash
+  - name: Upload SARIF report files to GitHub
+    uses: github/codeql-action/upload-sarif@v3
 
-      - name: Scan YAML files with kube-linter
-        id: kube-linter-action-scan
-        uses: stackrox/kube-linter-action@v1.0.5
-        with:
-          directory: webapp
-          config: kube-linter-config/.kube-linter-config.yml
-          format: sarif
-          output-file: ../results/kube-linter.sarif
-        continue-on-error: true
-
-      - name: Save kube-linter output to file
-        run: |
-          cat ${{ GITHUB_REPOSITORY }}/results/kube-linter.sarif > kube-linter.sarif
-        shell: bash
-
-      - name: Upload SARIF report files to GitHub
-        uses: github/codeql-action/upload-sarif@v3
-
-      - name: Verify kube-linter-action succeeded
-        run: |
-          echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
-          [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
-        shell: bash
+  - name: Verify kube-linter-action succeeded
+    run: |
+      echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
+      [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
+    shell: bash
