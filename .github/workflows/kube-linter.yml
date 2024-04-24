@@ -25,8 +25,8 @@ jobs:
         with:
           directory: webapp
           config: sample/.kube-linter-config.yaml
-          format: sarif
-          output-file: ../results/kube-linter.sarif
+          format: json
+          output-file: ../results/kube-linter.json
         continue-on-error: true
 
       - name: Upload SARIF report files to GitHub
