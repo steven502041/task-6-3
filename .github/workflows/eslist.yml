@@ -1,4 +1,4 @@
-name: "ESLint analysis"
+name: Analyze code statically
 
 on:
   push:
@@ -6,20 +6,9 @@ on:
   pull_request:
 
 jobs:
-  build:
+  eslint:
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      actions: read
-      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - name: Analyze code statically
-        on: pull_request
-        jobs:
-          eslint:
-            runs-on: ubuntu-latest
-            steps:
-              - uses: actions/checkout@v2
-              - name: Analyze code statically using ESLint
-                uses: moneyforward/eslint-action@v0
+      - uses: actions/checkout@v2
+      - name: Analyze code statically using ESLint
+        uses: moneyforward/eslint-action@v0
