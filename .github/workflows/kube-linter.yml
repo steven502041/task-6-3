@@ -32,6 +32,7 @@ jobs:
       - name: Save kube-linter output to file
         run: |
           ls "../results"
+          pwd "../results"
           cat ${{ github.workspace }}/results/kube-linter.sarif >
         shell: bash
 
