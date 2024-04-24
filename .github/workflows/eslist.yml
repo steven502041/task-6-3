@@ -1,4 +1,4 @@
-name: "ESLint analysis"
+name: Check Kubernetes YAMLs with kube-linter
 
 on:
   push:
@@ -34,15 +34,17 @@ jobs:
           cd "../results" && cat kube-linter.sarif
         shell: bash
 
-      - name: Upload SARIF report files to GitHub
-        uses: github/codeql-action/upload-sarif@v3
-
       - name: Run npm install
         run: npm install
 
       - name: Run ESLint
         run: node_modules/.bin/eslint build docs lib script spec-main -f node_modules/@microsoft/eslint-formatter-sarif/sarif.js -o results.sarif || true
 
-      - uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
+      - name: Upload SARIF report files to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+
+      - name: Verify kube-linter-action succeeded
+        run: |
+          echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
+          [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
+        shell: bash
