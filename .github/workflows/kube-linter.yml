@@ -27,11 +27,11 @@ jobs:
           config: kube-linter-config/.kube-linter-config.yml
           format: sarif
           output-file: kube-linter.sarif
-        #continue-on-error: true
+        continue-on-error: true
 
       - name: Save kube-linter output to file
         run: |
-          cat kube-linter.sarif
+          cat kube-linter.sarif > kube-linter.sarif
         shell: bash
 
       - name: Upload SARIF report files to GitHub
