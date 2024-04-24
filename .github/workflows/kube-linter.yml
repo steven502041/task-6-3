@@ -20,7 +20,7 @@ jobs:
         run: mkdir -p ../results
 
       - name: Scan yaml files with kube-linter
-        uses: stackrox/kube-linter-action@v1.0.5
+        uses: stackrox/kube-linter-action@v1.0.4
         id: kube-linter-action-scan
         with:
           directory: webapp
