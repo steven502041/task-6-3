@@ -33,6 +33,7 @@ jobs:
         run: |
           ls "../results"
           pwd "../results"
+          pwd ${{ github.workspace }}
           cat ${{ github.workspace }}/results/kube-linter.sarif >
         shell: bash
 
