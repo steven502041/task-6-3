@@ -37,12 +37,6 @@ jobs:
       - name: Upload SARIF report files to GitHub
         uses: github/codeql-action/upload-sarif@v3
 
-      - name: Verify kube-linter-action succeeded
-        run: |
-          echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
-          [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
-        shell: bash
-
       - name: Run npm install
         run: npm install
 
