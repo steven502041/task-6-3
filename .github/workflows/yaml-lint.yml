@@ -1,15 +1,19 @@
 name: 'Yamllint GitHub Actions'
+
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
+
 jobs:
   yamllint:
     name: 'Yamllint'
     runs-on: ubuntu-latest
+
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
+
       - name: 'Yamllint'
         uses: karancode/yamllint-github-action@master
         with:
