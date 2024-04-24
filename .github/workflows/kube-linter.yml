@@ -31,7 +31,7 @@ jobs:
 
       - name: Save kube-linter output to file
         run: |
-          cat ${{ github.workspace }}/results/kube-linter.sarif > "kube-linter.sarif"
+          cat ${{ github.workspace }}/results/kube-linter.sarif
         shell: bash
 
       - name: Upload SARIF report files to GitHub
